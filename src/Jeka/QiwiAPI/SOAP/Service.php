@@ -6,12 +6,6 @@ namespace Jeka\QiwiAPI\SOAP;
 
 /**
  * IShopServerWSService class
- *
- *
- *
- * @author    {author}
- * @copyright {copyright}
- * @package   {package}
  */
 class Service extends \SoapClient
 {

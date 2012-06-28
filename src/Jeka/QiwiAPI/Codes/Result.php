@@ -1,8 +1,8 @@
 <?php
 
-namespace Jeka\QiwiAPI\SOAP;
+namespace Jeka\QiwiAPI\Codes;
 
-class ResultsList
+final class Results
 {
     const SUCCESS = 0;
     const SERVER_IS_BUSY = 13;

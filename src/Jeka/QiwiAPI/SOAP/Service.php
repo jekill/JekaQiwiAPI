@@ -2,23 +2,29 @@
 
 namespace Jeka\QiwiAPI\SOAP;
 
+use Jeka\QiwiAPI\SOAP\Parameters\CreateBillParams;
+use Jeka\QiwiAPI\SOAP\Parameters\CheckBillParams;
+use Jeka\QiwiAPI\SOAP\Parameters\GetBillListParams;
+use Jeka\QiwiAPI\SOAP\Parameters\CancelBillParams;
+use Jeka\QiwiAPI\SOAP\Parameters\CancelBillParams;
+use Jeka\QiwiAPI\SOAP\Response\CheckBillResponse;
+use Jeka\QiwiAPI\SOAP\Response\UpdateBillResponse;
+use Jeka\QiwiAPI\SOAP\Response\CancelBillResponse;
+use Jeka\QiwiAPI\SOAP\Response\CreateBillResponse;
+use Jeka\QiwiAPI\SOAP\Response\GetBillListResponse;
 
-
-/**
- * IShopServerWSService class
- */
 class Service extends \SoapClient
 {
 
     private static $classmap = array(
-        'checkBill' => 'checkBill',
-        'checkBillResponse' => 'checkBillResponse',
-        'getBillList' => 'getBillList',
-        'getBillListResponse' => 'getBillListResponse',
-        'cancelBill' => 'cancelBill',
-        'cancelBillResponse' => 'cancelBillResponse',
-        'createBill' => 'createBill',
-        'createBillResponse' => 'createBillResponse',
+        'checkBill' => 'CheckBillParams',
+        'checkBillResponse' => 'CheckBillResponse',
+        'getBillList' => 'GetBillListParams',
+        'getBillListResponse' => 'GetBillListResponse',
+        'cancelBill' => 'CancelBillParams',
+        'cancelBillResponse' => 'CancelBillResponse',
+        'createBill' => 'CreateBillParams',
+        'createBillResponse' => 'CreateBillResponse',
     );
 
     public function __construct($wsdl = "", $options = array())
@@ -28,19 +34,31 @@ class Service extends \SoapClient
             //$wsdl='https://ishop.qiwi.ru/docs/IShopServerWS.wsdl';
         }
 
-        foreach (self::$classmap as $key => $value) {
-            if (!isset($options['classmap'][$key])) {
-                $options['classmap'][$key] = __NAMESPACE__.'\\'.$value;
-            }
-        }
+        $options['classmap'] = array_merge(
+            $this->createClassMapOptions(self::$classmap),
+            isset($options['classmap']) ? $options['classmap'] : array()
+        );
         parent::__construct($wsdl, $options);
     }
 
+    public function createClassMapOptions(array $classmap)
+    {
+        $options = array();
+        foreach ($classmap as $key => $value) {
+
+            $ns = substr($value, -1) === 'e' ? 'Response' : 'Parameters';
+            $options[$key] = __NAMESPACE__ . '\\' . $ns . '\\' . $value;
+
+        }
+        return $options;
+    }
+
+
     /**
-     * @param checkBill $parameters
-     * @return checkBillResponse
+     * @param CheckBillParams $parameters
+     * @return CheckBillResponse
      */
-    public function checkBill(checkBill $parameters)
+    public function checkBill(CheckBillParams $parameters)
     {
         return $this->__soapCall('checkBill', array($parameters), array(
                 'uri' => 'http://server.ishop.mw.ru/',
@@ -50,10 +68,10 @@ class Service extends \SoapClient
     }
 
     /**
-     * @param getBillList $parameters
-     * @return getBillListResponse
+     * @param GetBillListParams $parameters
+     * @return GetBillListResponse
      */
-    public function getBillList(getBillList $parameters)
+    public function getBillList(GetBillListParams $parameters)
     {
         return $this->__soapCall('getBillList', array($parameters), array(
                 'uri' => 'http://server.ishop.mw.ru/',
@@ -65,12 +83,12 @@ class Service extends \SoapClient
     /**
      *
      *
-     * @param cancelBill $parameters
-     * @return cancelBillResponse
+     * @param CancelBillParams $parameters
+     * @return CancelBillResponse
      */
-    public function cancelBill(cancelBill $parameters)
+    public function cancelBill(CancelBillParams $parameters)
     {
-            return $this->__soapCall('cancelBill', array($parameters), array(
+        return $this->__soapCall('cancelBill', array($parameters), array(
                 'uri' => 'http://server.ishop.mw.ru/',
                 'soapaction' => ''
             )
@@ -78,12 +96,10 @@ class Service extends \SoapClient
     }
 
     /**
-     *
-     *
-     * @param createBill $parameters
-     * @return createBillResponse
+     * @param CreateBillParams $parameters
+     * @return CreateBillResponse
      */
-    public function createBill(createBill $parameters)
+    public function createBill(CreateBillParams $parameters)
     {
         return $this->__soapCall('createBill', array($parameters), array(
                 'uri' => 'http://server.ishop.mw.ru/',
@@ -96,63 +112,12 @@ class Service extends \SoapClient
 
 
 
-class checkBill
-{
-    public $login; // string
-    public $password; // string
-    public $txn; // string
-}
 
-class checkBillResponse
-{
-    public $user; // string
-    public $amount; // string
-    public $date; // string
-    public $lifetime; // string
-    public $status; // int
-}
 
-class getBillList
-{
-    public $login; // string
-    public $password; // string
-    public $dateFrom; // string
-    public $dateTo; // string
-    public $status; // int
-}
 
-class getBillListResponse
-{
-    public $txns; // string
-    public $count; // int
-}
 
-class cancelBill
-{
-    public $login; // string
-    public $password; // string
-    public $txn; // string
-}
 
-class cancelBillResponse
-{
-    public $cancelBillResult; // int
-}
 
-class createBill
-{
-    public $login; // string
-    public $password; // string
-    public $user; // string
-    public $amount; // string
-    public $comment; // string
-    public $txn; // string
-    public $lifetime; // string
-    public $alarm; // int
-    public $create; // boolean
-}
 
-class createBillResponse
-{
-    public $createBillResult; // int
-}
+
+

@@ -3,6 +3,8 @@
 
 namespace Jeka\QiwiAPI\SOAP;
 
+use UpdateBillParams;
+
 abstract class Client
 {
 
@@ -44,17 +46,7 @@ abstract class Client
     }
 }
 
-class UpdateBillParams
-{
-    public $login;
-    public $password;
-    public $txn;
-    public $status;
-}
 
-class UpdateBillResponse
-{
-    public $updateBillResult;
-}
+
 
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace Jeka\QiwiAPI\SOAP;
+namespace Jeka\QiwiAPI\Codes;
 
-class StatusesList
+final class Statuses
 {
     /** Выставлен */
     const SUBMITED = 50;

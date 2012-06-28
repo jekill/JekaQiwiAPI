@@ -2,7 +2,7 @@
 
 namespace Jeka\QiwiAPI\Codes;
 
-final class Results
+final class ResultCodes
 {
     const SUCCESS = 0;
     const SERVER_IS_BUSY = 13;
